@@ -1,0 +1,57 @@
+.category-form-container {
+  padding: 20px 0;
+}
+
+h2 {
+  margin: 0 0 20px 0;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 0;
+  max-height: 400px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.help-text {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+mat-dialog-actions {
+  padding: 20px 0 0 0;
+  margin-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  gap: 8px;
+}
+
+button[mat-button],
+button[mat-raised-button] {
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+button[mat-raised-button]:disabled {
+  opacity: 0.5;
+}

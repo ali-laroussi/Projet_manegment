@@ -1,0 +1,26 @@
+<div class="category-form-container">
+  <h2 mat-dialog-title>
+    {{ mode === 'create' ? 'Ajouter une nouvelle catégorie' : 'Modifier la catégorie' }}
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nom de la catégorie</mat-label>
+        <input matInput formControlName="name" placeholder="Ex: Designer, Développeur, Manager...">
+        <mat-error>{{ getErrorMessage() }}</mat-error>
+      </mat-form-field>
+
+      <small class="help-text">
+        Donnez un nom clair et descriptif à la catégorie qui permettra d'identifier rapidement le type de compétence ou de rôle.
+      </small>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" [disabled]="form.invalid || isSubmitting" (click)="onSubmit()">
+      {{ mode === 'create' ? 'Créer' : 'Modifier' }}
+    </button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,29 @@
+.form-dialog {
+  width: 500px;
+  padding: 20px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.date-field {
+  width: 100%;
+}
+
+mat-error {
+  font-size: 12px;
+}

@@ -1,0 +1,175 @@
+.login-shell {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 32px 20px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 176, 87, 0.22), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(80, 126, 255, 0.25), transparent 34%),
+    linear-gradient(135deg, #0f172a 0%, #16213e 48%, #1f2f57 100%);
+}
+
+.login-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, black 55%, transparent 100%);
+  opacity: 0.45;
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 520px;
+  padding: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(248, 250, 252, 0.92);
+  box-shadow: 0 28px 90px rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(18px);
+  animation: card-enter 0.55s ease-out;
+}
+
+.login-hero {
+  padding: 36px 36px 20px;
+}
+
+.brand-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1d4ed8;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.app-title {
+  margin: 18px 0 10px;
+  color: #0f172a;
+  font-size: 44px;
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.login-subtitle {
+  margin: 0;
+  max-width: 420px;
+  color: #475569;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+mat-card-content {
+  padding: 8px 36px 36px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+:host ::ng-deep .login-form .mat-mdc-form-field-subscript-wrapper {
+  padding-top: 4px;
+}
+
+:host ::ng-deep .login-form .mdc-notched-outline__leading,
+:host ::ng-deep .login-form .mdc-notched-outline__notch,
+:host ::ng-deep .login-form .mdc-notched-outline__trailing {
+  border-color: rgba(148, 163, 184, 0.6);
+}
+
+:host ::ng-deep .login-form .mat-mdc-form-field-focus-overlay {
+  background: rgba(59, 130, 246, 0.04);
+}
+
+:host ::ng-deep .login-form .mat-mdc-text-field-wrapper {
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 18px;
+}
+
+:host ::ng-deep .login-form .mat-mdc-form-field-infix {
+  min-height: 58px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.submit-button {
+  height: 56px;
+  margin-top: 6px;
+  border-radius: 18px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.28);
+}
+
+.submit-button:hover:not([disabled]) {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 44px rgba(37, 99, 235, 0.34);
+}
+
+.submit-button[disabled] {
+  opacity: 0.86;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 600px) {
+  .login-shell {
+    padding: 14px;
+  }
+
+  .login-card {
+    max-width: 100%;
+    border-radius: 24px;
+  }
+
+  .login-hero {
+    padding: 26px 22px 14px;
+  }
+
+  .app-title {
+    font-size: 34px;
+  }
+
+  .login-subtitle {
+    font-size: 14px;
+  }
+
+  mat-card-content {
+    padding: 6px 22px 24px;
+  }
+
+  .submit-button {
+    height: 52px;
+  }
+}

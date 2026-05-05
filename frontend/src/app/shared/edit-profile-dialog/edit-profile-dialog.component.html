@@ -1,0 +1,120 @@
+<h2 mat-dialog-title>
+  <mat-icon>edit</mat-icon>
+  Modifier mon profil
+</h2>
+
+<mat-dialog-content>
+  <!-- Messages d'erreur et de succès -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <mat-icon>error</mat-icon>
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success">
+    <mat-icon>check_circle</mat-icon>
+    {{ successMessage }}
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+    <!-- Prénom -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="firstName" type="text" placeholder="Votre prénom">
+      <mat-icon matPrefix>person</mat-icon>
+      <mat-error *ngIf="hasError('firstName', 'required')">
+        {{ getErrorMessage('firstName') }}
+      </mat-error>
+      <mat-error *ngIf="hasError('firstName', 'minlength')">
+        {{ getErrorMessage('firstName') }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Nom -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="lastName" type="text" placeholder="Votre nom">
+      <mat-icon matPrefix>person</mat-icon>
+      <mat-error *ngIf="hasError('lastName', 'required')">
+        {{ getErrorMessage('lastName') }}
+      </mat-error>
+      <mat-error *ngIf="hasError('lastName', 'minlength')">
+        {{ getErrorMessage('lastName') }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="votre.email@example.com">
+      <mat-icon matPrefix>email</mat-icon>
+      <mat-error *ngIf="hasError('email', 'required')">
+        {{ getErrorMessage('email') }}
+      </mat-error>
+      <mat-error *ngIf="hasError('email', 'email')">
+        {{ getErrorMessage('email') }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Mot de passe -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nouveau mot de passe (optionnel)</mat-label>
+      <input 
+        matInput 
+        [type]="hidePassword ? 'password' : 'text'" 
+        formControlName="password"
+        placeholder="Laisser vide pour ne pas changer">
+      <mat-icon matPrefix>lock</mat-icon>
+      <button type="button" mat-icon-button matSuffix (click)="togglePasswordVisibility()" *ngIf="profileForm.get('password')?.value">
+        <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="hasError('password', 'minlength')">
+        {{ getErrorMessage('password') }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Confirmation du mot de passe -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="profileForm.get('password')?.value">
+      <mat-label>Confirmer le mot de passe</mat-label>
+      <input 
+        matInput 
+        [type]="hidePassword ? 'password' : 'text'" 
+        formControlName="confirmPassword"
+        placeholder="Confirmez votre nouveau mot de passe">
+      <mat-icon matPrefix>lock</mat-icon>
+      <mat-error *ngIf="profileForm.hasError('passwordMismatch')">
+        Les mots de passe ne correspondent pas
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Infos supplémentaires -->
+    <div class="info-section">
+      <div class="info-row">
+        <span class="info-label">ID Profil:</span>
+        <span class="info-value">{{ data.id }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Rôle:</span>
+        <span class="info-value">
+          <mat-chip [color]="data.role === 'ADMIN' ? 'warn' : 'accent'" selected>
+            {{ data.role }}
+          </mat-chip>
+        </span>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()" [disabled]="isLoading">
+    Annuler
+  </button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSubmit()"
+    [disabled]="!profileForm.valid || isLoading">
+    <mat-icon *ngIf="!isLoading">save</mat-icon>
+    <mat-spinner *ngIf="isLoading" diameter="20" class="spinner-button"></mat-spinner>
+    {{ isLoading ? 'Enregistrement...' : 'Enregistrer' }}
+  </button>
+</mat-dialog-actions>

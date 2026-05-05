@@ -1,0 +1,100 @@
+<div class="app-container" *ngIf="isAuthenticated$ | async; else notAuthenticated">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <button mat-icon-button (click)="sidenav.toggle()" *ngIf="isMobileView">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <div class="toolbar-brand">
+      <div class="brand-mark">PM</div>
+      <div class="brand-copy">
+        <span class="app-title">{{ title }}</span>
+        <span class="app-subtitle">Workspace</span>
+      </div>
+    </div>
+
+    <span class="spacer"></span>
+
+    <div class="user-menu" *ngIf="currentUser$ | async as user">
+      <div class="user-chip">
+        <div class="user-copy">
+          <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+          <span class="user-role">{{ user.role }}</span>
+        </div>
+      </div>
+
+      <button mat-icon-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="openEditProfileDialog()">
+          <mat-icon>person</mat-icon>
+          <span>Profil</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Deconnexion</span>
+        </button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" [opened]="!isMobileView" class="sidenav">
+      <div class="sidenav-header">
+        <div class="sidenav-badge">Navigation</div>
+        <p>Accedez rapidement a vos espaces et actions principales.</p>
+      </div>
+
+      <mat-nav-list>
+        <ng-container *ngIf="(currentUser$ | async)?.role === 'ADMIN'">
+          <mat-list-item routerLink="/admin/dashboard" routerLinkActive="nav-active" (click)="closeSidenavIfMobile()">
+            <mat-icon matListItemIcon>dashboard</mat-icon>
+            <span matListItemTitle>Tableau de bord</span>
+          </mat-list-item>
+
+          <mat-list-item routerLink="/admin/employees" routerLinkActive="nav-active" (click)="closeSidenavIfMobile()">
+            <mat-icon matListItemIcon>people</mat-icon>
+            <span matListItemTitle>Employes</span>
+          </mat-list-item>
+
+          <mat-list-item routerLink="/admin/categories" routerLinkActive="nav-active" (click)="closeSidenavIfMobile()">
+            <mat-icon matListItemIcon>category</mat-icon>
+            <span matListItemTitle>Categories</span>
+          </mat-list-item>
+
+          <mat-list-item routerLink="/admin/projects" routerLinkActive="nav-active" (click)="closeSidenavIfMobile()">
+            <mat-icon matListItemIcon>folder</mat-icon>
+            <span matListItemTitle>Projets</span>
+          </mat-list-item>
+
+          <mat-list-item routerLink="/admin/assignments" routerLinkActive="nav-active" (click)="closeSidenavIfMobile()">
+            <mat-icon matListItemIcon>assignment</mat-icon>
+            <span matListItemTitle>Affectations</span>
+          </mat-list-item>
+        </ng-container>
+
+        <ng-container *ngIf="(currentUser$ | async)?.role === 'EMPLOYEE'">
+          <mat-list-item routerLink="/employee/dashboard" routerLinkActive="nav-active" (click)="closeSidenavIfMobile()">
+            <mat-icon matListItemIcon>dashboard</mat-icon>
+            <span matListItemTitle>Tableau de bord</span>
+          </mat-list-item>
+
+          <mat-list-item routerLink="/employee/my-projects" routerLinkActive="nav-active" (click)="closeSidenavIfMobile()">
+            <mat-icon matListItemIcon>assignment</mat-icon>
+            <span matListItemTitle>Mes projets</span>
+          </mat-list-item>
+        </ng-container>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<ng-template #notAuthenticated>
+  <router-outlet></router-outlet>
+</ng-template>

@@ -1,0 +1,55 @@
+<div class="form-dialog">
+  <h2 mat-dialog-title>
+    {{ mode === 'create' ? 'Créer un nouveau projet' : 'Modifier le projet' }}
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="form" class="form-container">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Titre du projet</mat-label>
+        <input matInput formControlName="title" placeholder="Ex: Internal HR Application">
+        <mat-error *ngIf="form.get('title')?.invalid">
+          {{ getErrorMessage('Titre') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" rows="3" placeholder="Décrivez le projet en détail..."></textarea>
+        <mat-error *ngIf="form.get('description')?.invalid">
+          {{ getErrorMessage('Description') }}
+        </mat-error>
+      </mat-form-field>
+
+      <div class="date-row">
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Date de début</mat-label>
+          <input matInput type="date" formControlName="startDate">
+          <mat-error *ngIf="form.get('startDate')?.invalid">
+            Date requise
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Date de fin</mat-label>
+          <input matInput type="date" formControlName="endDate">
+          <mat-error *ngIf="form.get('endDate')?.invalid">
+            Date requise
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="dialogRef.close()">Annuler</button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="onSubmit()"
+      [disabled]="form.invalid || isSubmitting"
+    >
+      {{ mode === 'create' ? 'Créer' : 'Mettre à jour' }}
+    </button>
+  </mat-dialog-actions>
+</div>

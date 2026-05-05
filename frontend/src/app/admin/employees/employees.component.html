@@ -1,0 +1,120 @@
+<div class="employees-shell">
+      <section class="hero-strip">
+        <div class="hero-copy">
+          <div class="eyebrow">People management</div>
+          <h1>Gestion des employes</h1>
+          <p>
+            Consultez votre equipe, identifiez rapidement les roles actifs et
+            gardez une vue plus claire sur votre organisation.
+          </p>
+        </div>
+
+        <button mat-flat-button color="primary" class="hero-action" (click)="openAddEmployeeDialog()">
+          <mat-icon>person_add</mat-icon>
+          Ajouter un employe
+        </button>
+      </section>
+
+      <section class="overview-row">
+        <mat-card class="overview-card">
+          <span class="overview-label">Effectif total</span>
+          <strong>{{ employees.length }}</strong>
+          <small>collaborateurs visibles dans l'espace admin</small>
+        </mat-card>
+
+        <mat-card class="overview-card">
+          <span class="overview-label">Administrateurs</span>
+          <strong>{{ getRoleCount('ADMIN') }}</strong>
+          <small>profils avec acces de pilotage</small>
+        </mat-card>
+
+        <mat-card class="overview-card">
+          <span class="overview-label">Employes</span>
+          <strong>{{ getRoleCount('EMPLOYEE') }}</strong>
+          <small>profils operationnels en base</small>
+        </mat-card>
+      </section>
+
+      <mat-card class="table-card" *ngIf="employees.length > 0; else noData">
+        <div class="table-toolbar">
+          <div>
+            <div class="toolbar-kicker">Directory</div>
+            <h2>Equipe active</h2>
+          </div>
+          <div class="toolbar-meta">{{ employees.length }} resultats</div>
+        </div>
+
+        <div class="table-container">
+          <table mat-table [dataSource]="getDisplayedEmployees()" class="employees-table">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Collaborateur</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="person-cell">
+                  <div class="person-avatar">
+                    {{ element.firstName.charAt(0) }}{{ element.lastName.charAt(0) }}
+                  </div>
+                  <div class="person-copy">
+                    <strong>{{ element.firstName }} {{ element.lastName }}</strong>
+                    <span>ID #{{ element.id }}</span>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Contact</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="email-cell">
+                  <mat-icon>mail</mat-icon>
+                  <span>{{ element.email }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef>Role</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="role-badge" [ngClass]="element.role.toLowerCase()">
+                  {{ element.role }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="action-group">
+                  <button mat-icon-button matTooltip="Envoyer une notification" class="action-button edit" (click)="sendNotification(element)">
+                    <mat-icon>notifications</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Modifier" class="action-button edit" (click)="openEditEmployeeDialog(element)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Supprimer" class="action-button delete" (click)="deleteEmployee(element)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
+        <div class="table-footer" *ngIf="employees.length > 3">
+          <button mat-stroked-button (click)="toggleEmployees()" class="expand-button">
+            <mat-icon>{{ showAllEmployees ? 'expand_less' : 'expand_more' }}</mat-icon>
+            <span>{{ showAllEmployees ? 'Voir moins' : 'Voir plus' }} ({{ employees.length - 3 }} supplémentaire{{ employees.length - 3 > 1 ? 's' : '' }})</span>
+          </button>
+        </div>
+      </mat-card>
+
+      <ng-template #noData>
+        <div class="empty-state">
+          <mat-icon>people_outline</mat-icon>
+          <h2>Aucun employe</h2>
+          <p>Les collaborateurs apparaitront ici des qu'ils seront disponibles.</p>
+        </div>
+      </ng-template>
+    </div>

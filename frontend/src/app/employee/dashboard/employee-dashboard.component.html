@@ -1,0 +1,207 @@
+<div class="dashboard-shell">
+  <section class="hero-panel">
+    <div class="live-indicator" [class.updating]="isLiveUpdating">
+      <div class="live-dot"></div>
+      <span class="live-text">En direct ({{ lastUpdateTime }})</span>
+    </div>
+
+    <div class="hero-copy">
+      <div class="eyebrow">Employee dashboard</div>
+      <h1>Bienvenue, {{ (currentUser$ | async)?.firstName }}.</h1>
+      <p>
+        Retrouvez en un coup d'oeil vos projets, votre rythme de travail et
+        votre espace personnel.
+      </p>
+
+      <div class="hero-meta">
+        <div class="hero-chip">
+          <span class="hero-chip-value">{{ projectCount }}</span>
+          <span class="hero-chip-label">projets</span>
+        </div>
+        <div class="hero-chip">
+          <span class="hero-chip-value">{{ notifications.length }}</span>
+          <span class="hero-chip-label">notifications</span>
+        </div>
+        <div class="hero-chip">
+          <span class="hero-chip-value">{{ workloadStatus }}</span>
+          <span class="hero-chip-label">statut</span>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a mat-flat-button color="primary" routerLink="/employee/my-projects">Voir mes projets</a>
+      </div>
+    </div>
+
+    <div class="hero-orb">
+      <div class="orb-glow"></div>
+      <div class="orb-core">
+        <span>{{ activeAssignmentCount }}</span>
+        <small>missions actives</small>
+      </div>
+      <div class="orb-caption">Charge actuelle en temps reel</div>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <mat-card class="metric-card profile-card">
+      <div class="metric-topline">Profil</div>
+      <div class="card-icon">
+        <mat-icon>person</mat-icon>
+      </div>
+      <div class="metric-value">
+        {{ (currentUser$ | async)?.firstName }} {{ (currentUser$ | async)?.lastName }}
+      </div>
+      <div class="metric-label">Profil connecte</div>
+      <div class="metric-footnote">{{ (currentUser$ | async)?.email }}</div>
+    </mat-card>
+
+    <mat-card class="metric-card accent-blue">
+      <div class="metric-topline">Portfolio</div>
+      <div class="card-icon">
+        <mat-icon>assignment</mat-icon>
+      </div>
+      <div class="metric-value">{{ projectCount }}</div>
+      <div class="metric-label">Projets assignes</div>
+      <div class="metric-footnote">{{ assignmentSummary }}</div>
+    </mat-card>
+
+    <mat-card class="metric-card accent-rose">
+      <div class="metric-topline">Activite</div>
+      <div class="card-icon">
+        <mat-icon>bolt</mat-icon>
+      </div>
+      <div class="metric-value">{{ workloadStatus }}</div>
+      <div class="metric-label">Statut actuel</div>
+      <div class="metric-footnote">
+        {{ workloadFootnote }}
+      </div>
+    </mat-card>
+  </section>
+
+  <section class="content-grid">
+    <mat-card class="panel-card notifications-panel">
+      <div class="panel-head">
+        <div class="panel-copy">
+          <div class="panel-kicker">Messages admin</div>
+          <h2>Notifications</h2>
+          <p class="panel-subtitle">Les derniers messages recus de l'administration.</p>
+        </div>
+        <span class="panel-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2Z"></path>
+          </svg>
+        </span>
+      </div>
+
+      <div class="project-list notifications-list" *ngIf="notifications.length > 0; else emptyNotifications">
+        <div class="project-row notification-row" *ngFor="let notification of getDisplayedNotifications()">
+          <div class="project-badge notification-badge">
+            <span class="notification-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm6-6V11a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2Z"></path>
+              </svg>
+            </span>
+          </div>
+          <div class="project-copy">
+            <div class="row-topline">
+              <h3>{{ notification.senderName }}</h3>
+              <div class="project-period mobile-period">{{ notification.createdAt | date:'dd/MM HH:mm' }}</div>
+            </div>
+            <p>{{ notification.message }}</p>
+          </div>
+          <div class="project-period">{{ notification.createdAt | date:'dd/MM HH:mm' }}</div>
+        </div>
+
+        <div class="panel-footer" *ngIf="notifications.length > 4">
+          <button mat-stroked-button (click)="toggleNotifications()" class="expand-button">
+            <mat-icon>{{ showAllNotifications ? 'expand_less' : 'expand_more' }}</mat-icon>
+            <span>{{ showAllNotifications ? 'Voir moins' : 'Voir plus' }} ({{ notifications.length - 4 }} supplémentaire{{ notifications.length - 4 > 1 ? 's' : '' }})</span>
+          </button>
+        </div>
+      </div>
+
+      <ng-template #emptyNotifications>
+        <div class="empty-inline">
+          <mat-icon>notifications_none</mat-icon>
+          <p>Aucune notification recue pour le moment.</p>
+        </div>
+      </ng-template>
+    </mat-card>
+
+    <mat-card class="panel-card spotlight-card">
+      <div class="panel-head">
+        <div class="panel-copy">
+          <div class="panel-kicker">Focus</div>
+          <h2>Vue rapide</h2>
+          <p class="panel-subtitle">Le projet a surveiller en priorite aujourd'hui.</p>
+        </div>
+        <mat-icon>insights</mat-icon>
+      </div>
+
+      <div class="spotlight-body" *ngIf="highlightProject; else emptyFocus">
+        <div class="spotlight-title">{{ highlightProject.title }}</div>
+        <p>{{ highlightProject.description }}</p>
+
+        <div class="spotlight-meta">
+          <div class="meta-pill">
+            <mat-icon>calendar_month</mat-icon>
+            <span>{{ highlightProject.startDate }} - {{ highlightProject.endDate }}</span>
+          </div>
+          <div class="meta-pill">
+            <mat-icon>flag</mat-icon>
+            <span>{{ activeAssignmentCount > 0 ? 'En cours' : 'A planifier' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #emptyFocus>
+        <div class="empty-inline">
+          <mat-icon>folder_open</mat-icon>
+          <p>Aucun projet n'est encore rattache a votre espace.</p>
+        </div>
+      </ng-template>
+    </mat-card>
+
+    <mat-card class="panel-card projects-panel">
+      <div class="panel-head">
+        <div class="panel-copy">
+          <div class="panel-kicker">Portfolio</div>
+          <h2>Mes projets</h2>
+          <p class="panel-subtitle">Vos affectations recentes et accessibles rapidement.</p>
+        </div>
+        <a mat-button color="primary" routerLink="/employee/my-projects">Tout ouvrir</a>
+      </div>
+
+      <div class="project-list projects-list" *ngIf="projects.length > 0; else emptyProjects">
+        <div class="project-row" *ngFor="let project of getDisplayedProjects()">
+          <div class="project-badge">
+            {{ project.title.charAt(0) }}
+          </div>
+          <div class="project-copy">
+            <div class="row-topline">
+              <h3>{{ project.title }}</h3>
+              <div class="project-period mobile-period">{{ project.startDate }}</div>
+            </div>
+            <p>{{ project.description }}</p>
+          </div>
+          <div class="project-period">{{ project.startDate }}</div>
+        </div>
+
+        <div class="panel-footer" *ngIf="projects.length > 3">
+          <button mat-stroked-button (click)="toggleProjects()" class="expand-button">
+            <mat-icon>{{ showAllProjects ? 'expand_less' : 'expand_more' }}</mat-icon>
+            <span>{{ showAllProjects ? 'Voir moins' : 'Voir plus' }} ({{ projects.length - 3 }} supplémentaire{{ projects.length - 3 > 1 ? 's' : '' }})</span>
+          </button>
+        </div>
+      </div>
+
+      <ng-template #emptyProjects>
+        <div class="empty-inline">
+          <mat-icon>assignment_late</mat-icon>
+          <p>Vos projets apparaitront ici des qu'une affectation sera disponible.</p>
+        </div>
+      </ng-template>
+    </mat-card>
+  </section>
+</div>

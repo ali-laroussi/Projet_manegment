@@ -1,0 +1,63 @@
+<div class="form-dialog">
+  <h2 mat-dialog-title>
+    {{ mode === 'create' ? 'Créer une affectation' : 'Modifier l\'affectation' }}
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="form" class="form-container">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Sélectionner un employé</mat-label>
+        <mat-select formControlName="employeeId">
+          <mat-option *ngFor="let emp of employees" [value]="emp.id">
+            {{ emp.firstName }} {{ emp.lastName }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('employeeId')?.invalid">
+          {{ getErrorMessage('Employé') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Sélectionner un projet</mat-label>
+        <mat-select formControlName="projectId">
+          <mat-option *ngFor="let proj of projects" [value]="proj.id">
+            {{ proj.title }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('projectId')?.invalid">
+          {{ getErrorMessage('Projet') }}
+        </mat-error>
+      </mat-form-field>
+
+      <div class="date-row">
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Date de début</mat-label>
+          <input matInput type="date" formControlName="startDate">
+          <mat-error *ngIf="form.get('startDate')?.invalid">
+            Date requise
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Date de fin</mat-label>
+          <input matInput type="date" formControlName="endDate">
+          <mat-error *ngIf="form.get('endDate')?.invalid">
+            Date requise
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="dialogRef.close()">Annuler</button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="onSubmit()"
+      [disabled]="form.invalid || isSubmitting"
+    >
+      {{ mode === 'create' ? 'Créer' : 'Mettre à jour' }}
+    </button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,55 @@
+<div class="container">
+      <div class="header-section">
+        <h1>Mes projets assignés</h1>
+        <div class="live-indicator" [class.updating]="isLiveUpdating">
+          <div class="live-dot"></div>
+          <span class="live-text">En direct ({{ lastUpdateTime }})</span>
+        </div>
+      </div>
+
+      <div class="projects-grid" *ngIf="projects.length > 0; else noProjects">
+        <mat-card *ngFor="let project of projects" class="project-card" [class.active]="getAssignmentStatus(project.id!) === 'active'">
+          <div class="card-header">
+            <mat-card-header>
+              <mat-card-title>{{ project.title }}</mat-card-title>
+            </mat-card-header>
+            <div class="status-badge" [class.active]="getAssignmentStatus(project.id!) === 'active'" [class.planned]="getAssignmentStatus(project.id!) === 'planned'">
+              {{ getAssignmentStatus(project.id!) === 'active' ? 'En cours' : 'Planifié' }}
+            </div>
+          </div>
+
+          <mat-card-content>
+            <p class="description">{{ project.description }}</p>
+            <div class="project-info">
+              <div class="info-item">
+                <mat-icon>calendar_month</mat-icon>
+                <div class="date-info">
+                  <span class="label">Période d'affectation :</span>
+                  <span class="date">{{ getAssignmentDates(project.id!)?.startDate }} au {{ getAssignmentDates(project.id!)?.endDate }}</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-button color="primary">
+              <mat-icon>visibility</mat-icon>
+              Voir détails
+            </button>
+            <button mat-button>
+              <mat-icon>download</mat-icon>
+              Ressources
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <ng-template #noProjects>
+        <div class="empty-state">
+          <mat-icon>folder_open</mat-icon>
+          <h2>Aucun projet assigné</h2>
+          <p>Vous n'avez pas de projets assignés pour le moment.</p>
+        </div>
+      </ng-template>
+    </div>
+

@@ -1,0 +1,87 @@
+# Gitignore for Spring Boot + Angular Project
+
+## Spring Boot
+target/
+*.jar
+*.jar.original
+*.class
+.classpath
+.project
+.settings/
+.vscode/
+*.log
+*.swp
+*.swo
+*~
+
+## IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+
+## Maven
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+## Gradle
+.gradle
+build/
+
+## Angular
+node_modules/
+dist/
+.angular
+angular.json
+.editorconfig
+*.log
+
+## Environment files
+.env
+.env.local
+.env.*.local
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Temporary files
+*.tmp
+*.temp
+*.backup
+
+## Database
+*.sql.bak
+database.mv.db
+
+## Build
+out/
+bin/
+
+## IDE Plugin specific files
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+## Windows
+*.exe
+*.dll
+
+## IntelliJ
+.idea/
+out/
+*.iml
+
+## VSCode
+.vscode/
+*.code-workspace
