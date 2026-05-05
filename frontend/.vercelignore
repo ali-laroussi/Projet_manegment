@@ -1,0 +1,8 @@
+node_modules
+dist
+.vercel
+.angular
+.git
+*.log
+.env
+.env.local
