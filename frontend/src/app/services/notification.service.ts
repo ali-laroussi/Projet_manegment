@@ -8,16 +8,16 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class NotificationService {
-  private adminUrl = `${environment.apiUrl}/admin/notifications`;
-  private employeeUrl = `${environment.apiUrl}/employees/me/notifications`;
+
+  private api = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  send(request: CreateNotificationRequest): Observable<AppNotification> {
-    return this.http.post<AppNotification>(this.adminUrl, request);
+  send(data: CreateNotificationRequest): Observable<AppNotification> {
+    return this.http.post<AppNotification>(`${this.api}/admin/notifications`, data);
   }
 
   getMine(): Observable<AppNotification[]> {
-    return this.http.get<AppNotification[]>(this.employeeUrl);
+    return this.http.get<AppNotification[]>(`${this.api}/employees/me/notifications`);
   }
 }

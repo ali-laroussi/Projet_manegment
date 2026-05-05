@@ -8,50 +8,40 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AssignmentService {
-  private apiUrl = `${environment.apiUrl}/assignments`;
-  private adminUrl = `${environment.apiUrl}/admin/assignments`;
-  private projectsUrl = `${environment.apiUrl}/projects`;
+
+  private api = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Assignment[]> {
-    return this.http.get<Assignment[]>(this.apiUrl);
+    return this.http.get<Assignment[]>(`${this.api}/assignments`);
   }
 
   getById(id: number): Observable<Assignment> {
-    return this.http.get<Assignment>(`${this.apiUrl}/${id}`);
+    return this.http.get<Assignment>(`${this.api}/assignments/${id}`);
   }
 
   getByEmployeeId(employeeId: number): Observable<Assignment[]> {
-    return this.http.get<Assignment[]>(`${this.apiUrl}/employee/${employeeId}`);
+    return this.http.get<Assignment[]>(`${this.api}/assignments/employee/${employeeId}`);
   }
 
   getByProjectId(projectId: number): Observable<Assignment[]> {
-    return this.http.get<Assignment[]>(`${this.apiUrl}/project/${projectId}`);
+    return this.http.get<Assignment[]>(`${this.api}/assignments/project/${projectId}`);
   }
 
-  create(assignment: CreateAssignmentRequest): Observable<Assignment> {
-    return this.http.post<Assignment>(this.apiUrl, assignment);
+  create(data: CreateAssignmentRequest): Observable<Assignment> {
+    return this.http.post<Assignment>(`${this.api}/assignments`, data);
   }
 
-  update(id: number, assignment: CreateAssignmentRequest): Observable<Assignment> {
-    return this.http.put<Assignment>(this.apiUrl, { ...assignment, id });
+  update(id: number, data: CreateAssignmentRequest): Observable<Assignment> {
+    return this.http.put<Assignment>(`${this.api}/assignments/${id}`, data);
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.adminUrl}/${id}`);
+    return this.http.delete<void>(`${this.api}/admin/assignments/${id}`);
   }
 
-  assignEmployeeToProject(
-    projectId: number,
-    employeeId: number,
-    startDate: string,
-    endDate: string
-  ): Observable<Assignment> {
-    return this.http.post<Assignment>(`${this.projectsUrl}/${projectId}/assign`, {
-      employeeId,
-      startDate,
-      endDate
-    });
+  assignEmployeeToProject(projectId: number, payload: any): Observable<Assignment> {
+    return this.http.post<Assignment>(`${this.api}/projects/${projectId}/assign`, payload);
   }
 }

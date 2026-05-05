@@ -8,36 +8,36 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ProjectService {
-  private apiUrl = `${environment.apiUrl}/projects`;
-  private adminUrl = `${environment.apiUrl}/admin/projects`;
+
+  private api = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Project[]> {
-    return this.http.get<Project[]>(this.adminUrl);
+    return this.http.get<Project[]>(`${this.api}/admin/projects`);
   }
 
   getById(id: number): Observable<Project> {
-    return this.http.get<Project>(`${this.adminUrl}/${id}`);
+    return this.http.get<Project>(`${this.api}/admin/projects/${id}`);
   }
 
-  create(project: CreateProjectRequest): Observable<Project> {
-    return this.http.post<Project>(this.adminUrl, project);
+  create(data: CreateProjectRequest): Observable<Project> {
+    return this.http.post<Project>(`${this.api}/admin/projects`, data);
   }
 
-  update(id: number, project: CreateProjectRequest): Observable<Project> {
-    return this.http.put<Project>(this.adminUrl, { ...project, id });
+  update(id: number, data: CreateProjectRequest): Observable<Project> {
+    return this.http.put<Project>(`${this.api}/admin/projects/${id}`, data);
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.adminUrl}/${id}`);
+    return this.http.delete<void>(`${this.api}/admin/projects/${id}`);
   }
 
   search(keyword: string): Observable<Project[]> {
-    return this.http.get<Project[]>(this.adminUrl);
+    return this.http.get<Project[]>(`${this.api}/admin/projects?search=${keyword}`);
   }
 
   getEmployeeProjects(employeeId: number): Observable<Project[]> {
-    return this.http.get<Project[]>(`${this.apiUrl}/employee/${employeeId}`);
+    return this.http.get<Project[]>(`${this.api}/projects/employee/${employeeId}`);
   }
 }

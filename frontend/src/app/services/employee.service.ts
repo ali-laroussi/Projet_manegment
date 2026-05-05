@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,36 +9,36 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class EmployeeService {
-  private apiUrl = `${environment.apiUrl}/employees`;
-  private adminUrl = `${environment.apiUrl}/admin/employees`;
+
+  private api = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.adminUrl);
+    return this.http.get<Employee[]>(`${this.api}/admin/employees`);
   }
 
   getById(id: number): Observable<Employee> {
-    return this.http.get<Employee>(`${this.adminUrl}/${id}`);
+    return this.http.get<Employee>(`${this.api}/admin/employees/${id}`);
   }
 
-  create(employee: CreateEmployeeRequest): Observable<Employee> {
-    return this.http.post<Employee>(this.adminUrl, employee);
+  create(data: CreateEmployeeRequest): Observable<Employee> {
+    return this.http.post<Employee>(`${this.api}/admin/employees`, data);
   }
 
-  update(id: number, employee: CreateEmployeeRequest): Observable<Employee> {
-    return this.http.put<Employee>(this.adminUrl, { ...employee, id });
+  update(id: number, data: CreateEmployeeRequest): Observable<Employee> {
+    return this.http.put<Employee>(`${this.api}/admin/employees/${id}`, data);
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.adminUrl}/${id}`);
+    return this.http.delete<void>(`${this.api}/admin/employees/${id}`);
   }
 
   search(keyword: string): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.adminUrl);
+    return this.http.get<Employee[]>(`${this.api}/admin/employees?search=${keyword}`);
   }
 
-  updateOwnProfile(id: number, employee: CreateEmployeeRequest): Observable<Employee> {
-    return this.http.put<Employee>(`${this.apiUrl}/${id}/profile`, { ...employee, id });
+  updateOwnProfile(id: number, data: CreateEmployeeRequest): Observable<Employee> {
+    return this.http.put<Employee>(`${this.api}/employees/${id}/profile`, data);
   }
 }

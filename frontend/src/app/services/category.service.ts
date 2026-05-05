@@ -8,27 +8,28 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class CategoryService {
-  private apiUrl = `${environment.apiUrl}/admin/categories`;
+
+  private api = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Category[]> {
-    return this.http.get<Category[]>(this.apiUrl);
+    return this.http.get<Category[]>(`${this.api}/admin/categories`);
   }
 
   getById(id: number): Observable<Category> {
-    return this.http.get<Category>(`${this.apiUrl}/${id}`);
+    return this.http.get<Category>(`${this.api}/admin/categories/${id}`);
   }
 
   create(category: { name: string }): Observable<Category> {
-    return this.http.post<Category>(this.apiUrl, category);
+    return this.http.post<Category>(`${this.api}/admin/categories`, category);
   }
 
   update(id: number, category: { name: string }): Observable<Category> {
-    return this.http.put<Category>(this.apiUrl, { ...category, id });
+    return this.http.put<Category>(`${this.api}/admin/categories/${id}`, category);
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.api}/admin/categories/${id}`);
   }
 }

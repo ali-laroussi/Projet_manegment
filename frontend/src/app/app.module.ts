@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-// Material Imports
+// Angular Material
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -31,11 +31,14 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+// App
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
-import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { EditProfileDialogComponent } from './shared/edit-profile-dialog/edit-profile-dialog.component';
+
+// Interceptor
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,8 @@ import { EditProfileDialogComponent } from './shared/edit-profile-dialog/edit-pr
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    // Material Modules
+
+    // Material
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -86,4 +90,4 @@ import { EditProfileDialogComponent } from './shared/edit-profile-dialog/edit-pr
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

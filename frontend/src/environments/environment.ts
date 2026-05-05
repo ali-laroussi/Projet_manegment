@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api',
-  tokenKey: 'auth_token',
-  userKey: 'auth_user'
+  apiUrl: 'https://projet-manegment.onrender.com/api',
+  tokenKey: 'token',
+  userKey: 'user'
 };
