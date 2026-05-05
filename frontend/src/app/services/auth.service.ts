@@ -21,16 +21,20 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(request: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.api}/auth/login`, request).pipe(
-      tap(res => {
-        localStorage.setItem(environment.tokenKey, res.token);
-        localStorage.setItem(environment.userKey, JSON.stringify(res.user));
-        this.currentUserSubject.next(res.user);
-        this.isAuthenticatedSubject.next(true);
-      })
-    );
-  }
+  login(request: any): Observable<any> {
+  return this.http.post<any>(`${this.api}/auth/login`, request).pipe(
+    tap((res) => {
+      console.log('LOGIN RESPONSE:', res); // 🔍 debug
+
+      // ⚠️ IMPORTANT : utiliser "token"
+      localStorage.setItem(environment.tokenKey, res.token);
+      localStorage.setItem(environment.userKey, JSON.stringify(res.user));
+
+      this.currentUserSubject.next(res.user);
+      this.isAuthenticatedSubject.next(true);
+    })
+  );
+}
 
   register(request: RegisterRequest): Observable<AuthUser> {
     return this.http.post<AuthUser>(`${this.api}/auth/register`, request);
